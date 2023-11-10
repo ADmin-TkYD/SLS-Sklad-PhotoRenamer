@@ -13,6 +13,7 @@ def find_photo(path: str , extension: str, dict_with_photo=None) -> dict:
 
     pattern_photo = r'.*[.](?:' + extension + ')$'
 
+    """
     # pattern_photo = r'^DSC_(\d{4})[.](?:' + extension + ')$'
     # pattern_barcode = r'^21\d{11}$'
     # pattern_end_file_name = r'^\d{13}[-]\w$'
@@ -23,26 +24,29 @@ def find_photo(path: str , extension: str, dict_with_photo=None) -> dict:
     # datas['products'].update({code[0]: 0 for code in barcode_result if code[0] not in datas['products']})
     # dict_with_photo['dirs'].update({count_dirs: path})
     # count_dirs = len(dict_with_photo['dirs'])
+    """
 
-    # Создаем словарь для новой (данной) папки
+    # Создаем словарь для новой (данной) папки.
     dict_with_photo.update({path: {}})
 
     # print(f'Path: {path}')
 
-    # Перебираем все элементы в текущей директории
+    # Перебираем все элементы в текущей директории.
     for dr in os.listdir(path):
         abs_path = os.path.join(path, dr)
         # print(f'\tabs_path: {abs_path}')
 
         if os.path.isdir(abs_path):
             # print(f'\t\tDir: {dr}')
-            # Если полученный элемент - директория, вызываем рекурсивно функцию, передав в нее путь к директории
+            # Если полученный элемент - директория, вызываем рекурсивно функцию, передав в нее путь к директории.
             find_photo(path=abs_path, extension=extension, dict_with_photo=dict_with_photo)
 
         elif re.fullmatch(pattern_photo, dr, flags=re.IGNORECASE):
-            # добавляем файлы подпавшие под паттерн в словарь
-            dict_with_photo[path].update({len(dict_with_photo[path]): abs_path})
+            # Добавляем файлы подпавшие под паттерн в словарь.
+            # dict_with_photo[path].update({len(dict_with_photo[path]): abs_path})
+            dict_with_photo[path].update({dr: {'barcode': 0, 'letter': ''}})
 
+        """
         # elif '.jpg' in dr[-4:].lower():
         # print(f'\t\tfile: {dr}')
 
@@ -74,8 +78,9 @@ def find_photo(path: str , extension: str, dict_with_photo=None) -> dict:
             #         print(f'{text_msg.format(barcode_count=barcode_count)} | Datas: {barcode_result} '
             #               f'| File: {abs_path}')
             #         match = re.fullmatch(pattern_barcode, dr, flags=re.IGNORECASE)
+        """
 
-    # Если словарь для данной папки пуст - удаляем словарь
+    # Если словарь для данной папки пуст - удаляем словарь.
     if not (dict_with_photo[path]):
         del dict_with_photo[path]
 
