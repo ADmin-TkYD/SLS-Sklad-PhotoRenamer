@@ -6,8 +6,9 @@ import re
 # Union[Union[int, str], float]
 async def find_photo(path: str, extension: str, dict_with_photo: dict[dict[dict]] = None) -> dict:
     if dict_with_photo is None:
-        # dict_with_photo = {'dirs': {}, 'files': {}}
-        dict_with_photo = {}
+        # dict_with_photo = {'dirs': {}, 'files': {}}  # ver 1
+        # dict_with_photo = {}  # ver 2
+        dict_with_photo = {'all': {}, 'groups': {}}  # ver 3
 
     # text_barcodes_read = f'Прочитано штрих-кодов: {{barcode_count}}!'
     # text_photo_does_not_contain_barcode = f'\nФото не содержит штрих-кода, либо его не удалось прочитать!'
@@ -28,7 +29,8 @@ async def find_photo(path: str, extension: str, dict_with_photo: dict[dict[dict]
     """
 
     # Создаем словарь для новой (данной) папки.
-    dict_with_photo.update({path: {}})
+    # dict_with_photo.update({path: {}})  # ver 2
+    dict_with_photo['all'].update({path: {}})  # ver 3
 
     # print(f'Path: {path}')
 
@@ -44,9 +46,14 @@ async def find_photo(path: str, extension: str, dict_with_photo: dict[dict[dict]
 
         elif re.fullmatch(pattern_photo, dr, flags=re.IGNORECASE):
             # Добавляем файлы подпавшие под паттерн в словарь.
-            # dict_with_photo[path].update({len(dict_with_photo[path]): abs_path})
-            # dict_with_photo[path].update({dr: {'barcode': 0, 'letter': '', 'path': abs_path}})
-            dict_with_photo[path].update({dr: {'path': abs_path, 'file': dr}})
+            # dict_with_photo[path].update({len(dict_with_photo[path]): abs_path})  # ver 1
+            # dict_with_photo[path].update({dr: {'barcode': 0, 'letter': '', 'path': abs_path}})  # ver 1
+
+            # dict_with_photo[path].update({dr: {'path': abs_path, 'file': dr}})  # ver 2
+            # dict_with_photo[path].update({dr: {}})  # ver 2
+
+            dict_with_photo['all'][path].update({dr: {'path': abs_path, 'file': dr}})  # ver 3
+            dict_with_photo['all'][path].update({dr: {}})  # ver 3
 
         """
         # elif '.jpg' in dr[-4:].lower():
@@ -83,7 +90,10 @@ async def find_photo(path: str, extension: str, dict_with_photo: dict[dict[dict]
         """
 
     # Если словарь для данной папки пуст - удаляем словарь.
-    if not (dict_with_photo[path]):
-        del dict_with_photo[path]
+    # if not (dict_with_photo[path]):  # ver 2
+    #     del dict_with_photo[path]  # ver 2
+
+    if not (dict_with_photo['all'][path]):  # ver 3
+        del dict_with_photo['all'][path]  # ver 3
 
     return dict_with_photo
