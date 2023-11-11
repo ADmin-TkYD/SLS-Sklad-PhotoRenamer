@@ -1,5 +1,4 @@
 import json
-from typing import Union
 
 
 async def save_data_to_json(path: str, data: dict) -> json:
@@ -28,7 +27,7 @@ async def save_data_to_json(path: str, data: dict) -> json:
     # return json_object
 
 
-async def print_data_from_json(data: Union[dict, json]):
+async def print_data_from_json(data: [dict, json]):
     if isinstance(data, dict):
         data = json.dumps(data, indent=4, ensure_ascii=False, sort_keys=True)
 

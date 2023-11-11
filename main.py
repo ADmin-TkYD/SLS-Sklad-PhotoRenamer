@@ -2,12 +2,12 @@ import asyncio
 # import json module
 # import json
 
-from concurrent.futures import ThreadPoolExecutor
+# from concurrent.futures import ThreadPoolExecutor
 
-from misc import find_photo, find_barcode, barcode_reader, save_data_to_json, print_data_from_json
+from misc import find_photo, find_barcode, barcode_reader, save_data_to_json
 
 
-_executor = ThreadPoolExecutor(1)
+# _executor = ThreadPoolExecutor(1)
 
 
 # def sync_blocking(seconds: int = 1):
