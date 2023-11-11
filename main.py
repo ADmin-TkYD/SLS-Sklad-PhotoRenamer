@@ -1,6 +1,6 @@
 import asyncio
 # import json module
-# import json
+import json
 
 # from concurrent.futures import ThreadPoolExecutor
 
@@ -14,16 +14,37 @@ from misc import find_photo, find_barcode, barcode_reader, save_data_to_json
 #     time.sleep(seconds)
 
 
-async def main(path: str, extension: list, pattern: str, data_file: str):
+# async def main(path: str, extension: list, pattern_barcode: str, pattern_photo_name: str, data_file: str):
+async def main(path: str, extension: list, data_file: str):
+    patterns = {
+        'barcode': r'^21\d{11}$',
+        'extension': r'.*[.](\w{3,4})$',
+        'photo_name': r'^DSC_(\d{4})[.]',
+        'find_files': f'.*[.](?:{{extension}})$',
+        'photo_files': f'{{photo_name}}(?:{{extension}})$',
+        'barcode_name_files': f'{{barcode}}[-][a-z][.](?:{{extension}})$',
+    }
+
     ext = '|'.join(map(str, extension))
 
-    dict_with_photo = await find_photo(path, ext)
+    patterns['find_files'] = patterns['find_files'].format(extension=ext)
+    patterns['photo_files'] = patterns['photo_files'].format(photo_name=patterns['photo_name'], extension=ext)
+    patterns['barcode_name_files'] = patterns['barcode_name_files'].format(barcode=patterns['barcode'], extension=ext)
+    patterns['barcode'] += '$'
+
+    dict_with_photo = await find_photo(path, patterns['find_files'])
+
+    dict_with_photo = {'all': dict_with_photo}
+
     dict_with_photo = await find_barcode(
-        barcode_reader=barcode_reader, dict_with_photo=dict_with_photo, pattern=pattern)
+        barcode_reader=barcode_reader,
+        dict_with_photo=dict_with_photo,
+        patterns=patterns
+    )
 
     await save_data_to_json(path=data_file, data=dict_with_photo)
 
-    # await print_data_from_json(dict_with_photo)
+    # await print_data_from_json(dict_with_files)
 
     # run blocking function in another thread,
     # and wait for it's result:
@@ -31,14 +52,21 @@ async def main(path: str, extension: list, pattern: str, data_file: str):
 
 
 if __name__ == '__main__':
-    photo_dir = r'e:\SLS-Photo-for-Test\СЕНТЯБРЬ_2023\01-09-2023_(169) (1)\RIOPELE'
+    photo_dir = r'e:\SLS-Photo-for-Test'
     # photo_dir = r'e:\SLS-Photo-for-Test\СЕНТЯБРЬ_2023'
+
+    data_json_file = r'db\.data.json'
+
     photo_ext = ['jpg', 'jpeg', 'png']
-    pattern_barcode = r'^21\d{11}$'
-    data_file = r'db\.data.json'
 
     try:
-        asyncio.run(main(path=photo_dir, extension=photo_ext, pattern=pattern_barcode, data_file=data_file))
+        asyncio.run(
+            main(
+                path=photo_dir,
+                extension=photo_ext,
+                data_file=data_json_file
+            )
+        )
         # loop = asyncio.get_event_loop()
         # loop.run_until_complete(main(photo_dir, photo_ext))
         # loop.close()

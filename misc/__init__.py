@@ -1,4 +1,4 @@
-from .find_photo import find_photo
+from .find_files import find_photo
 from .find_barcode import find_barcode
 from .barcode_reader import barcode_reader
 from .json_data import save_data_to_json, print_data_from_json
