@@ -13,6 +13,8 @@ async def save_data_to_json(path: str, data: dict) -> json:
         except AttributeError:
             print(f'AttributeError: object has no attribute "update"')
 
+    except FileNotFoundError:
+        print(f'FileNotFoundError: No such file or directory: {path}')
     except json.JSONDecodeError:
         print(f'JSONDecodeError')
 
