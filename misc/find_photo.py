@@ -1,9 +1,10 @@
 import os
 import re
-from misc import barcode_reader
+# from misc import barcode_reader
 
 
-def find_photo(path: str , extension: str, dict_with_photo=None) -> dict:
+# Union[Union[int, str], float]
+async def find_photo(path: str, extension: str, dict_with_photo: dict[dict[dict]] = None) -> dict:
     if dict_with_photo is None:
         # dict_with_photo = {'dirs': {}, 'files': {}}
         dict_with_photo = {}
@@ -39,12 +40,13 @@ def find_photo(path: str , extension: str, dict_with_photo=None) -> dict:
         if os.path.isdir(abs_path):
             # print(f'\t\tDir: {dr}')
             # Если полученный элемент - директория, вызываем рекурсивно функцию, передав в нее путь к директории.
-            find_photo(path=abs_path, extension=extension, dict_with_photo=dict_with_photo)
+            await find_photo(path=abs_path, extension=extension, dict_with_photo=dict_with_photo)
 
         elif re.fullmatch(pattern_photo, dr, flags=re.IGNORECASE):
             # Добавляем файлы подпавшие под паттерн в словарь.
             # dict_with_photo[path].update({len(dict_with_photo[path]): abs_path})
-            dict_with_photo[path].update({dr: {'barcode': 0, 'letter': ''}})
+            # dict_with_photo[path].update({dr: {'barcode': 0, 'letter': '', 'path': abs_path}})
+            dict_with_photo[path].update({dr: {'path': abs_path, 'file': dr}})
 
         """
         # elif '.jpg' in dr[-4:].lower():
