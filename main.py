@@ -4,7 +4,7 @@ import json
 
 # from concurrent.futures import ThreadPoolExecutor
 
-from misc import find_photo, find_barcode, barcode_reader, save_data_to_json
+from misc import find_files, find_barcode, barcode_reader, save_data_to_json
 
 
 # _executor = ThreadPoolExecutor(1)
@@ -17,7 +17,7 @@ from misc import find_photo, find_barcode, barcode_reader, save_data_to_json
 # async def main(path: str, extension: list, pattern_barcode: str, pattern_photo_name: str, data_file: str):
 async def main(path: str, extension: list, data_file: str):
     patterns = {
-        'barcode': r'^21\d{11}$',
+        'barcode': r'^21\d{11}',
         'extension': r'.*[.](\w{3,4})$',
         'photo_name': r'^DSC_(\d{4})[.]',
         'find_files': f'.*[.](?:{{extension}})$',
@@ -32,9 +32,9 @@ async def main(path: str, extension: list, data_file: str):
     patterns['barcode_name_files'] = patterns['barcode_name_files'].format(barcode=patterns['barcode'], extension=ext)
     patterns['barcode'] += '$'
 
-    dict_with_photo = await find_photo(path, patterns['find_files'])
+    dict_with_photo = await find_files(path, patterns['find_files'])
 
-    dict_with_photo = {'all': dict_with_photo}
+    # dict_with_photo = {'all': dict_with_photo}
 
     dict_with_photo = await find_barcode(
         barcode_reader=barcode_reader,

@@ -17,3 +17,8 @@ async def barcode_reader(path_to_image: str, code_count: int = 13):
     return [(x.data.decode()) for x in decoded_list if len(x.data.decode()) == code_count]
     # return [(x.data.decode(), x.type, x.orientation) for x in decoded_list if len(x.data.decode()) == code_count]
 
+
+if __name__ == '__main__':
+    image_file = r'e:\SLS-Photo-for-Test\2023\2023.09\15-09-2023_(624)\DSC_7361.JPG'
+    result = barcode_reader(image_file)
+    print(result)
