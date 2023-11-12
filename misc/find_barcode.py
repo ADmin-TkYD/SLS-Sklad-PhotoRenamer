@@ -5,7 +5,7 @@ from typing import Callable
 
 
 # async def find_barcode(barcode_reader: Callable, dictionary: dict, patterns: dict) -> dict:
-async def find_barcode(barcode_reader: Callable, path: str, file: str, patterns: dict) -> dict:
+async def find_barcode(barcode_reader: Callable, path: str, file: str, patterns: dict) -> tuple:
     # if dictionary.get('all') is None:
     # if not dictionary:
     #     print(f'File dictionary is empty.')
@@ -91,7 +91,7 @@ async def find_barcode(barcode_reader: Callable, path: str, file: str, patterns:
                 dictionary.update({'debug': f'Double BarCode: {barcode_result}'})
 
                 print(
-                    f"Attention!:\t"
+                    f"Status: {dictionary['status']}!\t"
                     f"\tbarcode_result: '{barcode_result}"
                     f"\t| Save barcode: {dictionary['barcode']}"
                     f"\t| Save path: {os.path.join(path, file)}"
@@ -105,4 +105,4 @@ async def find_barcode(barcode_reader: Callable, path: str, file: str, patterns:
             'debug': {'filename': file, 'file': os.path.join(path, file)}
         })
 
-    return dictionary
+    return dictionary, photo_group

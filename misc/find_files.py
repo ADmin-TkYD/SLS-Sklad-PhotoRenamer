@@ -31,11 +31,16 @@ async def find_files(handlers: dict, path: str, patterns: dict, dictionary: dict
             # dictionary[path].update({sub_item: {'path': path, 'file': sub_item}})
             # dictionary[path].update({sub_item: {})
 
-            dictionary[path].update(
-                {sub_item: await handlers['find'](
-                    barcode_reader=handlers['read'], path=path, file=sub_item, patterns=patterns
-                )}
-            )
+            photo_data, photo_group = await handlers['find'](
+                barcode_reader=handlers['read'], path=path, file=sub_item, patterns=patterns)
+            dictionary[path].update({sub_item: photo_data})
+            print(f'photo_group: {photo_group}')
+
+            # dictionary[path].update(
+            #     {sub_item: await handlers['find'](
+            #         barcode_reader=handlers['read'], path=path, file=sub_item, patterns=patterns
+            #     )}
+            # )
             # default values:
             photo_group = {}
             letter = 'a'

@@ -1,6 +1,7 @@
 import asyncio
 # import json module
-import json
+# import json
+# import os
 
 # from concurrent.futures import ThreadPoolExecutor
 
@@ -55,7 +56,11 @@ async def main(path: str, extension: list, data_file: str):
 
 
 if __name__ == '__main__':
-    photo_dir = r'e:\SLS-Photo-for-Test'
+    # root_dir = os.path.dirname(os.path.abspath(__file__))
+    examples_dir = 'examples'
+    photo_dir = examples_dir
+
+    # photo_dir = r'e:\SLS-Photo-for-Test'
     # photo_dir = r'e:\SLS-Photo-for-Test\СЕНТЯБРЬ_2023'
 
     data_json_file = r'db\.data.json'
@@ -70,6 +75,7 @@ if __name__ == '__main__':
                 data_file=data_json_file
             )
         )
+
         # loop = asyncio.get_event_loop()
         # loop.run_until_complete(main(photo_dir, photo_ext))
         # loop.close()
