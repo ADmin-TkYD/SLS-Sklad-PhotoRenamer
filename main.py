@@ -32,19 +32,22 @@ async def main(path: str, extension: list, data_file: str):
     patterns['barcode_name_files'] = patterns['barcode_name_files'].format(barcode=patterns['barcode'], extension=ext)
     patterns['barcode'] += '$'
 
-    dict_with_photo = await find_files(path, patterns['find_files'])
+    handlers = {'find': find_barcode, 'read': barcode_reader}
 
-    # dict_with_photo = {'all': dict_with_photo}
+    # dictionary = await find_files(path, patterns['find_files'])
+    dict_with_photo = await find_files(handlers=handlers, path=path, patterns=patterns)
 
-    dict_with_photo = await find_barcode(
-        barcode_reader=barcode_reader,
-        dict_with_photo=dict_with_photo,
-        patterns=patterns
-    )
+    # dictionary = {'all': dictionary}
+
+    # dictionary = await find_barcode(
+    #     barcode_reader=barcode_reader,
+    #     dictionary=dictionary,
+    #     patterns=patterns
+    # )
 
     await save_data_to_json(path=data_file, data=dict_with_photo)
 
-    # await print_data_from_json(dict_with_files)
+    # await print_data_from_json(dictionary)
 
     # run blocking function in another thread,
     # and wait for it's result:

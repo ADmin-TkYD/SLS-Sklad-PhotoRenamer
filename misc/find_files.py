@@ -1,19 +1,20 @@
 import os
 import re
-# from misc import barcode_reader
 
 
-async def find_files(path: str, pattern: str, dict_with_files: dict[dict[dict]] = None) -> dict:
-    if dict_with_files is None:
-        # dict_with_files = {'dirs': {}, 'files': {}}
-        dict_with_files = {}
+async def find_files(handlers: dict, path: str, patterns: dict, dictionary: dict[dict[dict]] = None) -> dict:
+    if dictionary is None:
+        # dictionary = {'dirs': {}, 'dictionary': {}}
+        dictionary = {}
 
     if not os.path.exists(path):
         print(f'Directory: "{path}" not found!')
         return {}
 
+    pattern = patterns['find_files']
+
     # Создаем словарь для новой (данной) папки.
-    dict_with_files.update({path: {}})
+    dictionary.update({path: {}})
 
     # print(f'Path: {path}')
 
@@ -23,15 +24,24 @@ async def find_files(path: str, pattern: str, dict_with_files: dict[dict[dict]] 
 
         if os.path.isdir(abs_path):
             # Если полученный элемент - директория, вызываем рекурсивно функцию, передав в нее путь к директории.
-            await find_files(path=abs_path, pattern=pattern, dict_with_files=dict_with_files)
+            await find_files(handlers=handlers, path=abs_path, patterns=patterns, dictionary=dictionary)
 
         elif re.fullmatch(pattern, sub_item, flags=re.IGNORECASE):
             # Добавляем файлы подпавшие под паттерн в словарь.
-            dict_with_files[path].update({sub_item: {'path': abs_path, 'file': sub_item}})
-            dict_with_files[path].update({sub_item: {}})
+            # dictionary[path].update({sub_item: {'path': path, 'file': sub_item}})
+            # dictionary[path].update({sub_item: {})
+
+            dictionary[path].update(
+                {sub_item: await handlers['find'](
+                    barcode_reader=handlers['read'], path=path, file=sub_item, patterns=patterns
+                )}
+            )
+            # default values:
+            photo_group = {}
+            letter = 'a'
 
     # Если словарь для данной папки пуст - удаляем словарь.
-    if not (dict_with_files[path]):
-        del dict_with_files[path]
+    if not (dictionary[path]):
+        del dictionary[path]
 
-    return dict_with_files
+    return dictionary
