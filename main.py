@@ -55,7 +55,7 @@ if __name__ == '__main__':
     examples_dir = 'examples'
     photo_dir = examples_dir
 
-    # photo_dir = r'e:\SLS-Photo-for-Test'
+    photo_dir = r'e:\SLS-Photo-for-Test'
     # photo_dir = r'e:\SLS-Photo-for-Test\СЕНТЯБРЬ_2023'
 
     data_json_file = r'db\.data.json'

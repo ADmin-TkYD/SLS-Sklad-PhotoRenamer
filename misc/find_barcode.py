@@ -45,8 +45,8 @@ async def find_barcode(barcode_reader: Callable, dict_with_photo: dict, patterns
 
             # Если имя файла подпадает под шаблон имен файлов фотографий.
             elif re.fullmatch(patterns['photo_files'], file, flags=re.IGNORECASE):
-                barcode_result = await barcode_reader(os.path.join(path, file))
-                barcode_count = len(barcode_result)
+                barcode_list = await barcode_reader(os.path.join(path, file))
+                barcode_count = len(barcode_list)
                 if enable_debug:
                     print(f'The file "{file}" matches pattern.')
                     print(f'Barcodes found {barcode_count}.')
@@ -62,22 +62,35 @@ async def find_barcode(barcode_reader: Callable, dict_with_photo: dict, patterns
                     letter = chr(ord(letter) + 1)
 
                 if barcode_count > 0:
-                    match = {'barcode': barcode
-                             for barcode in barcode_result if re.fullmatch(patterns['barcode'], barcode)}
+                    # match = {'barcode': barcode
+                    #          for barcode in barcode_list if re.fullmatch(patterns['barcode'], barcode[0][0])}
+                    # print(f'barcode_list: {barcode_list}\tmatch: {match}')
 
-                    if match is None:
+                    # match = [{'barcode': barcode['barcode'], 'size': barcode['size']}
+                    #          for barcode in barcode_list if re.fullmatch(patterns['barcode'], barcode['barcode'])]
+                    # print(f'barcode_list: {barcode_list}\tmatch: {match}')
+
+                    result = None
+                    for barcode_dict in barcode_list:
+                        if 'barcode' in barcode_dict:
+                            if re.fullmatch(patterns['barcode'], barcode_dict['barcode']):
+                                result = barcode_dict
+                    #     # elif 'size' in barcode_dict:
+                    #     #     size = barcode_dict['size']
+
+                    if result is None:
                         dict_with_photo[path][file].update({
                             'status': statuses['incomprehensible'],
-                            'debug': {'barcode_count': barcode_count, 'barcode_result': barcode_result, 'match': match,
+                            'debug': {'barcode_count': barcode_count, 'barcode_list': barcode_list, 'result': result,
                                       'file': os.path.join(path, file)}
                         })
                         if enable_debug:
                             print(
                                 f"Status: {dict_with_photo[path][file]['status']}\t"
                                 f"The barcode found does not match the pattern\n"
-                                f"DEBUG: {barcode_result}")
+                                f"DEBUG: {barcode_list}")
 
-                    dict_with_photo[path][file].update(match)
+                    dict_with_photo[path][file].update(result)
 
                     # if barcode is not None (if the barcode is read from this file)
                     if dict_with_photo[path][file]['barcode']:
@@ -112,11 +125,11 @@ async def find_barcode(barcode_reader: Callable, dict_with_photo: dict, patterns
                     # DEBUG
                     if barcode_count > 1:
                         dict_with_photo[path][file].update({'status': statuses['attention']})
-                        dict_with_photo[path][file].update({'debug': f'Double BarCode: {barcode_result}'})
+                        dict_with_photo[path][file].update({'debug': f'Double BarCode: {barcode_list}'})
 
                         print(
                             f"Status: {dict_with_photo[path][file]['status']}!:\t"
-                            f"\tbarcode_result: '{barcode_result}"
+                            f"\tbarcode_list: '{barcode_list}"
                             f"\t| Save barcode: {dict_with_photo[path][file]['barcode']}"
                             f"\t| Save path: {os.path.join(path, file)}\n"
                         )

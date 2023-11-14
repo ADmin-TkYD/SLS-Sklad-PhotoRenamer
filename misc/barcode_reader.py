@@ -11,14 +11,25 @@ async def barcode_reader(path_to_image: str, code_count: int = 13):
     decoded_list = decode(image, symbols=[ZBarSymbol.EAN13, ZBarSymbol.CODE128])
 
     # await sleep(1)
+    # (width, height) = image.size
+    # print(f'Распознано штрих-кодов: {len(decoded_list)} | Datas: {decoded_list} | Size (width, height): {image.size}')
+    # width, height = image.size
 
-    # print(f'Распознано штрих-кодов: {len(decoded_list)} | Datas: {decoded_list}')
-
-    return [(x.data.decode()) for x in decoded_list if len(x.data.decode()) == code_count]
+    # return [(x.data.decode()) for x in decoded_list if len(x.data.decode()) == code_count]
+    return [{'barcode': x.data.decode(), 'size': image.size} for x in decoded_list if len(x.data.decode()) == code_count]
     # return [(x.data.decode(), x.type, x.orientation) for x in decoded_list if len(x.data.decode()) == code_count]
 
 
 if __name__ == '__main__':
+    import asyncio
+
     image_file = r'e:\SLS-Photo-for-Test\2023\2023.09\15-09-2023_(624)\DSC_7361.JPG'
-    result = barcode_reader(image_file)
+
+    result = asyncio.run(barcode_reader(image_file))
     print(result)
+
+    # При помощи PIL узнать размер можно так:
+    # from PIL import Image
+    #
+    # im = Image.open("logo.jpg")
+    # (width, height) = im.size
