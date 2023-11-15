@@ -19,6 +19,15 @@ async def barcode_reader(path_to_image: str, code_count: int = 13):
 
 
 if __name__ == '__main__':
+    import asyncio
+
     image_file = r'e:\SLS-Photo-for-Test\2023\2023.09\15-09-2023_(624)\DSC_7361.JPG'
-    result = barcode_reader(image_file)
+
+    result = asyncio.run(barcode_reader(image_file))
     print(result)
+
+    # При помощи PIL узнать размер можно так:
+    # from PIL import Image
+    #
+    # im = Image.open("logo.jpg")
+    # (width, height) = im.size
