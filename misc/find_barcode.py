@@ -19,17 +19,17 @@ async def find_barcode(barcode_reader: Callable, path: str, file: str, patterns:
         'incomprehensible': 'Incomprehensible',
     }
 
-    # for path, dict_files in dictionary.items():
+    # for file_path, dict_files in dictionary.items():
     # default values:
     dictionary = {}
     photo_group = {}
     letter = 'a'
 
-        # for file in dict_files:
-            # DEBUG:
-            # matches = re.fullmatch(patterns['barcode_name_files'], file, flags=re.IGNORECASE)
-            # print(f"Select file: {file}") if matches else ""
-            # print(f"{patterns['barcode_name_files']} File: {file}")
+    # for file in dict_files:
+    # DEBUG:
+    # matches = re.fullmatch(patterns['barcode_name_files'], file, flags=re.IGNORECASE)
+    # print(f"Select file: {file}") if matches else ""
+    # print(f"{patterns['barcode_name_files']} File: {file}")
 
     # Если файл уже был переименован ранее, переходим к следуюющему файлу.
     if re.fullmatch(patterns['barcode_name_files'], file, flags=re.IGNORECASE):
@@ -79,7 +79,7 @@ async def find_barcode(barcode_reader: Callable, path: str, file: str, patterns:
                     # DEBUG
                     # print(
                     #     f'File: {file_name}\tLetter: {file_letter}\t'
-                    #     f'Result: {dictionary["all"][path][file_name]}')
+                    #     f'Result: {dictionary["all"][file_path][file_name]}')
 
                 # reset values to default:
                 photo_group = {}

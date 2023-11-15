@@ -15,7 +15,7 @@ from misc import find_files, find_barcode, barcode_reader, save_data_to_json
 #     time.sleep(seconds)
 
 
-# async def main(path: str, extension: list, pattern_barcode: str, pattern_photo_name: str, data_file: str):
+# async def main(file_path: str, extension: list, pattern_barcode: str, pattern_photo_name: str, data_file: str):
 async def main(path: str, extension: list, data_file: str):
     patterns = {
         'barcode': r'^21\d{11}',
@@ -35,7 +35,7 @@ async def main(path: str, extension: list, data_file: str):
 
     handlers = {'find': find_barcode, 'read': barcode_reader}
 
-    # dictionary = await find_files(path, patterns['find_files'])
+    # dictionary = await find_files(file_path, patterns['find_files'])
     dict_with_photo = await find_files(handlers=handlers, path=path, patterns=patterns)
 
     # dictionary = {'all': dictionary}
@@ -56,7 +56,7 @@ async def main(path: str, extension: list, data_file: str):
 
 
 if __name__ == '__main__':
-    # root_dir = os.path.dirname(os.path.abspath(__file__))
+    # root_dir = os.file_path.dirname(os.file_path.abspath(__file__))
     examples_dir = 'examples'
     photo_dir = examples_dir
 

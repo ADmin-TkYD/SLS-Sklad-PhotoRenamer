@@ -16,7 +16,7 @@ async def find_files(handlers: dict, path: str, patterns: dict, dictionary: dict
     # Создаем словарь для новой (данной) папки.
     dictionary.update({path: {}})
 
-    # print(f'Path: {path}')
+    # print(f'Path: {file_path}')
 
     # Перебираем все элементы в текущей директории.
     for sub_item in os.listdir(path):
@@ -28,17 +28,17 @@ async def find_files(handlers: dict, path: str, patterns: dict, dictionary: dict
 
         elif re.fullmatch(pattern, sub_item, flags=re.IGNORECASE):
             # Добавляем файлы подпавшие под паттерн в словарь.
-            # dictionary[path].update({sub_item: {'path': path, 'file': sub_item}})
-            # dictionary[path].update({sub_item: {})
+            # dictionary[file_path].update({sub_item: {'file_path': file_path, 'file': sub_item}})
+            # dictionary[file_path].update({sub_item: {})
 
             photo_data, photo_group = await handlers['find'](
                 barcode_reader=handlers['read'], path=path, file=sub_item, patterns=patterns)
             dictionary[path].update({sub_item: photo_data})
             print(f'photo_group: {photo_group}')
 
-            # dictionary[path].update(
+            # dictionary[file_path].update(
             #     {sub_item: await handlers['find'](
-            #         barcode_reader=handlers['read'], path=path, file=sub_item, patterns=patterns
+            #         barcode_reader=handlers['read'], file_path=file_path, file=sub_item, patterns=patterns
             #     )}
             # )
             # default values:
