@@ -25,17 +25,17 @@ async def find_barcode(barcode_reader: Callable, path: str, file: str, patterns:
     photo_group = {}
     letter = 'a'
 
-    # for file in dict_files:
+    # for file_path in dict_files:
     # DEBUG:
-    # matches = re.fullmatch(patterns['barcode_name_files'], file, flags=re.IGNORECASE)
-    # print(f"Select file: {file}") if matches else ""
-    # print(f"{patterns['barcode_name_files']} File: {file}")
+    # matches = re.fullmatch(patterns['barcode_name_files'], file_path, flags=re.IGNORECASE)
+    # print(f"Select file_path: {file_path}") if matches else ""
+    # print(f"{patterns['barcode_name_files']} File: {file_path}")
 
     # Если файл уже был переименован ранее, переходим к следуюющему файлу.
     if re.fullmatch(patterns['barcode_name_files'], file, flags=re.IGNORECASE):
         dictionary.update({
-            'status': statuses['renamed'], 'debug': f"The file '{file}' was previously renamed"})
-        print(f'The file "{file}" was previously renamed. Continue...')
+            'status': statuses['renamed'], 'debug': f"The file_path '{file}' was previously renamed"})
+        print(f'The file_path "{file}" was previously renamed. Continue...')
 
     # Если имя файла подпадает под шаблон имен файлов фотографий.
     elif re.fullmatch(patterns['photo_files'], file, flags=re.IGNORECASE):
@@ -57,17 +57,17 @@ async def find_barcode(barcode_reader: Callable, path: str, file: str, patterns:
                 dictionary.update({
                     'status': statuses['incomprehensible'],
                     'debug': {'barcode_count': barcode_count, 'barcode_result': barcode_result, 'match': match,
-                              'file': os.path.join(path, file)}
+                              'file_path': os.path.join(path, file)}
                 })
 
             dictionary.update(match)
 
-            # if barcode is not None (if the barcode is read from this file)
+            # if barcode is not None (if the barcode is read from this file_path)
             if dictionary['barcode']:
                 dictionary.update({'status': statuses['barcode']})
 
                 for file_name, file_letter in photo_group.items():
-                    # Get extension from file
+                    # Get extension from file_path
                     ext = re.fullmatch(patterns['extension'], file, flags=re.IGNORECASE)[1].lower()
 
                     dictionary[path][file_name].update({
@@ -102,7 +102,7 @@ async def find_barcode(barcode_reader: Callable, path: str, file: str, patterns:
         barcode_count = -1
         dictionary.update({
             'status': statuses['incomprehensible'],
-            'debug': {'filename': file, 'file': os.path.join(path, file)}
+            'debug': {'filename': file, 'file_path': os.path.join(path, file)}
         })
 
     return dictionary, photo_group

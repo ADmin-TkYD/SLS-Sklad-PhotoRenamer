@@ -28,7 +28,7 @@ async def find_files(handlers: dict, path: str, patterns: dict, dictionary: dict
 
         elif re.fullmatch(pattern, sub_item, flags=re.IGNORECASE):
             # Добавляем файлы подпавшие под паттерн в словарь.
-            # dictionary[file_path].update({sub_item: {'file_path': file_path, 'file': sub_item}})
+            # dictionary[file_path].update({sub_item: {'file_path': file_path, 'file_path': sub_item}})
             # dictionary[file_path].update({sub_item: {})
 
             photo_data, photo_group = await handlers['find'](
@@ -38,7 +38,7 @@ async def find_files(handlers: dict, path: str, patterns: dict, dictionary: dict
 
             # dictionary[file_path].update(
             #     {sub_item: await handlers['find'](
-            #         barcode_reader=handlers['read'], file_path=file_path, file=sub_item, patterns=patterns
+            #         barcode_reader=handlers['read'], file_path=file_path, file_path=sub_item, patterns=patterns
             #     )}
             # )
             # default values:
