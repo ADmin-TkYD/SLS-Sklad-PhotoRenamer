@@ -3,6 +3,7 @@ import json
 
 async def save_data_to_json(path: str, data: dict) -> json:
     try:
+        # with open(path, 'r', encoding='utf-8') as json_file:
         with open(path, 'r') as json_file:
             data_from_file = json.load(json_file)
 
@@ -14,8 +15,10 @@ async def save_data_to_json(path: str, data: dict) -> json:
 
     except FileNotFoundError:
         print(f'FileNotFoundError: No such file or directory: {path}')
-    except json.JSONDecodeError:
-        print(f'JSONDecodeError')
+    except json.JSONDecodeError as e:
+        print(f'JSONDecodeError: {e}')
+    # except UnicodeEncodeError as e:
+        # print(f'UnicodeEncodeError: {e}')
 
     with open(path, 'w') as json_file:
         # Convert Python to JSON
@@ -38,7 +41,7 @@ async def print_data_from_json(data: [dict, json]):
 if __name__ == '__main__':
     import asyncio
 
-    data_file = r'..\db\.data.json'
+    data_file = r'../db/.data__2023.12.04.json'
     test_data = {"id": 121, "name": "Naveen", "course": "MERN Stack"}
 
     asyncio.run(save_data_to_json(data_file, test_data))

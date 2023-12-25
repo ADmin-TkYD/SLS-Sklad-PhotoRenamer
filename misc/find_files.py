@@ -15,7 +15,7 @@ async def find_files(path: str, pattern: str, dict_with_files: dict[dict[dict]] 
     # Создаем словарь для новой (данной) папки.
     dict_with_files.update({path: {}})
 
-    # print(f'Path: {path}')
+    # print(f'Path: {dst_path}')
 
     # Перебираем все элементы в текущей директории.
     for sub_item in os.listdir(path):
@@ -27,7 +27,7 @@ async def find_files(path: str, pattern: str, dict_with_files: dict[dict[dict]] 
 
         elif re.fullmatch(pattern, sub_item, flags=re.IGNORECASE):
             # Добавляем файлы подпавшие под паттерн в словарь.
-            dict_with_files[path].update({sub_item: {'path': abs_path, 'file': sub_item}})
+            dict_with_files[path].update({sub_item: {'dst_path': abs_path, 'file': sub_item}})
             dict_with_files[path].update({sub_item: {}})
 
     # Если словарь для данной папки пуст - удаляем словарь.
@@ -35,3 +35,13 @@ async def find_files(path: str, pattern: str, dict_with_files: dict[dict[dict]] 
         del dict_with_files[path]
 
     return dict_with_files
+
+
+# # распечатать все файлы и папки рекурсивно
+# for dirpath, dirnames, filenames in os.walk("."):
+#     # перебрать каталоги
+#     for dirname in dirnames:
+#         print("Каталог:", os.dst_path.join(dirpath, dirname))
+#     # перебрать файлы
+#     for filename in filenames:
+#         print("Файл:", os.dst_path.join(dirpath, filename))

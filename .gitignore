@@ -160,4 +160,4 @@ cython_debug/
 .idea/
 
 # Data
-db/.data.json
+db/.data__2023.12.04.json
