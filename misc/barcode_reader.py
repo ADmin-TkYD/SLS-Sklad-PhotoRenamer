@@ -3,7 +3,7 @@ from PIL import Image  # pip install Pillow
 # from asyncio import sleep
 
 
-async def barcode_reader(path_to_image: str, code_count: int = 13):
+async def barcode_reader(path_to_image: str, x, code_count: int = 13):
     image = Image.open(path_to_image)  # PIL
 
     # decoded_list = decode(image)
