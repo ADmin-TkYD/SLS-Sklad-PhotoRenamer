@@ -1,6 +1,6 @@
 from pyzbar.pyzbar import decode, ZBarSymbol
 from PIL import Image  # pip install Pillow
-import time
+# import time
 
 
 # from asyncio import sleep
@@ -38,6 +38,7 @@ if __name__ == '__main__':
     import asyncio
 
     # image_file = r'e:\SLS-Photo-for-Test\2023\2023.09\15-09-2023_(624)\DSC_7361.JPG'
+    # image_file = r'C:\Users\InfSub\Clouds\NextCloud\Cloud.TkYD.ru\InfSub\PublicPhoto\PhotoTextile\Auto_\21032037\2103203779457-c.jpg'
     image_file = r'e:\SLS-Photo-for-Test\NEXT\NEXT.png'
 
     result = asyncio.run(barcode_reader(image_file))
