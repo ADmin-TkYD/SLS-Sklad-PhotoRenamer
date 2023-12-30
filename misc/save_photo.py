@@ -2,7 +2,7 @@ import os
 import shutil
 
 
-async def save_photo(src_path: str, dst_path: str, data: dict, action_move: bool = False):
+async def save_photo(src_path: str, dst_path: str, data: dict, dir_barcode_len: int, action_move: bool = False):
     # распечатать все файлы и папки рекурсивно
     for dir_path, dir_names, filenames in os.walk(src_path):
         for filename in filenames:
@@ -23,7 +23,7 @@ async def save_photo(src_path: str, dst_path: str, data: dict, action_move: bool
                     dst_dir_path = dir_path.replace(src_path, dst_path)
                     dst_file_path = os.path.join(dst_dir_path, new_filename)
 
-                    dst_dir_path_barcode = os.path.join(dst_path, barcode[0:8])
+                    dst_dir_path_barcode = os.path.join(dst_path, barcode[0:dir_barcode_len])
                     dst_file_path_barcode = os.path.join(dst_dir_path_barcode, new_filename)
 
                     # TODO: проверить корректность работы с полными и относительными путями с учетом ОС Windows

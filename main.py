@@ -15,7 +15,14 @@ from misc import find_files, find_barcode, barcode_reader, save_data_to_json, sa
 
 
 # async def main(dst_path: str, extension: list, pattern_barcode: str, pattern_photo_name: str, data_file: str):
-async def main(src_path: str, extension: list, data_file: str, dst_path: str = None, action_move: bool = None):
+async def main(
+        src_path: str,
+        extension: list,
+        data_file: str,
+        dir_barcode_len: int,
+        dst_path: str = None,
+        action_move: bool = None
+    ):
     patterns = {
         'barcode': r'^21\d{11}',
         'extension': r'.*[.](\w{3,4})$',
@@ -49,7 +56,13 @@ async def main(src_path: str, extension: list, data_file: str, dst_path: str = N
     if dst_path is not None:
         if action_move is None:
             action_move = False
-        await save_photo(src_path=src_path, dst_path=dst_path, data=dict_with_photo, action_move=action_move)
+        await save_photo(
+            src_path=src_path,
+            dst_path=dst_path,
+            data=dict_with_photo,
+            dir_barcode_len=dir_barcode_len,
+            action_move=action_move
+        )
 
     # await print_data_from_json(dict_with_files)
 
@@ -72,12 +85,15 @@ if __name__ == '__main__':
 
     photo_ext = ['jpg', 'jpeg', 'png']
 
+    dir_name_barcode_len = 9
+
     try:
         asyncio.run(
             main(
                 src_path=photo_dir,
                 extension=photo_ext,
                 data_file=data_json_file,
+                dir_barcode_len=dir_name_barcode_len,
                 dst_path=result_path,
                 action_move=False
             )

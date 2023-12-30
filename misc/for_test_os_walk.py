@@ -25,6 +25,6 @@ if __name__ == '__main__':
     # print(os.stat(r"e:\SLS-Photo-for-Test\2020\2020\D#119856DO V3 (9).JPG"))
 
     string = "2101234567890"
-    str8 = string[0: 8]
-    print(f'{str8} {len(str8)}')
+    str9 = string[0: 9]
+    print(f'{str9}: {len(str9)}')
 
